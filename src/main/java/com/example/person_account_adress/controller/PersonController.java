@@ -35,6 +35,11 @@ public class PersonController {
         personImpl.deletePerson(id);
     }
 
+    @GetMapping("/findAllAbove18")
+    public List<Object> allAbove18(){
+        return personImpl.findAllAbove18();
+    }
+
 
 
 }

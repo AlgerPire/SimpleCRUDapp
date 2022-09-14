@@ -53,4 +53,8 @@ public class PersonImpl implements PersonService {
         personRepository.save(person);
         return person;
     }
+
+   public List<Object> findAllAbove18(){
+        return personRepository.findAllAbove18Years();
+   }
 }

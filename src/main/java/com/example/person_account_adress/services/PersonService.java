@@ -1,6 +1,7 @@
 package com.example.person_account_adress.services;
 
 import com.example.person_account_adress.entities.Person;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public interface PersonService {
 
     //add new person
     Person addNewPerson(Person person);
+
 
 
 }
