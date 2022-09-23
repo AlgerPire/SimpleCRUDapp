@@ -12,6 +12,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/person")
 public class PersonController {
+
     @Autowired
     PersonImpl personImpl;
 
@@ -21,17 +22,12 @@ public class PersonController {
     }
 
 
+    //listAll Person
     @GetMapping("/listAll")
     public String listAll(Model model){
         model.addAttribute("persons", personImpl.listAll());
         return "persons";
     }
-
-//    @PostMapping("/addPerson")
-//    public String addNewPerson(Model model ,Person person){
-//        model.addAttribute("persons",personImpl.addNewPerson(person));
-//        return "add_new_person";
-//    }
 
     // shto nje person
     @GetMapping("/addPerson")
@@ -48,6 +44,13 @@ public class PersonController {
         return "redirect:/person/listAll";
     }
 
+    //delete Person
+    @GetMapping("/deletePerson/{id}")
+    public String deleteStudentForm(@PathVariable Long id){
+        personImpl.deletePerson(id);
+        return "redirect:/person/listAll";
+    }
+
 
     @PostMapping("/updatePerson")
     public Person updatePerson(Long id, Person person){
@@ -55,16 +58,29 @@ public class PersonController {
         return personImpl.getPersonById(id);
     }
 
-    @DeleteMapping("/deletePerson")
-    public void deletePerson(Long id){
-        personImpl.deletePerson(id);
-    }
-
     @GetMapping("/findAllAbove18")
     public List<Object> allAbove18(){
         return personImpl.findAllAbove18();
     }
 
+    // before thymeleaf methods
+
+//    @GetMapping("/listAll")
+//    public List<Person> listAll(){
+//        model.addAttribute("persons", personImpl.listAll());
+//        return "persons";
+//    }
+
+//    @PostMapping("/addPerson")
+//    public Person addNewPerson(Person person){
+//       personImpl.addNewPerson(person);
+//        return person;
+//    }
+
+//    @DeleteMapping("/deletePerson")
+//    public void deletePerson(Long id){
+//        personImpl.deletePerson(id);
+//    }
 
 
 }
