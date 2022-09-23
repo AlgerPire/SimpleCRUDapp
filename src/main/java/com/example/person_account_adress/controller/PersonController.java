@@ -1,28 +1,53 @@
 package com.example.person_account_adress.controller;
-
 import com.example.person_account_adress.entities.Person;
+import com.example.person_account_adress.services.PersonService;
 import com.example.person_account_adress.services.impl.PersonImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/person")
 public class PersonController {
     @Autowired
     PersonImpl personImpl;
 
-    @GetMapping("/listAll")
-    public List<Person> listAll(){
-        return personImpl.listAll();
+    @GetMapping("/home")
+    public String homeView(){
+        return "homepage";
     }
 
-    @PostMapping("/addPerson")
-    public Person addNewPerson(Person person){
-        personImpl.addNewPerson(person);
-        return person;
+
+    @GetMapping("/listAll")
+    public String listAll(Model model){
+        model.addAttribute("persons", personImpl.listAll());
+        return "persons";
     }
+
+//    @PostMapping("/addPerson")
+//    public String addNewPerson(Model model ,Person person){
+//        model.addAttribute("persons",personImpl.addNewPerson(person));
+//        return "add_new_person";
+//    }
+
+    // shto nje person
+    @GetMapping("/addPerson")
+    public String createStudentForm(Model model){
+        Person person=new Person();
+        model.addAttribute("person",person);
+        return "add_new_person";
+    }
+
+    // save person process
+    @PostMapping("/personsSave")
+    public String saveStudent(@ModelAttribute("person") Person person){
+        personImpl.addNewPerson(person);
+        return "redirect:/person/listAll";
+    }
+
 
     @PostMapping("/updatePerson")
     public Person updatePerson(Long id, Person person){
