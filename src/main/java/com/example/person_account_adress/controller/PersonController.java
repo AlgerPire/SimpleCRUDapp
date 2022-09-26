@@ -1,6 +1,6 @@
 package com.example.person_account_adress.controller;
+
 import com.example.person_account_adress.entities.Person;
-import com.example.person_account_adress.services.PersonService;
 import com.example.person_account_adress.services.impl.PersonImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,6 +56,11 @@ public class PersonController {
     public Person updatePerson(Long id, Person person){
         personImpl.updatePerson(id,person);
         return personImpl.getPersonById(id);
+    }
+
+    @DeleteMapping("/deletePerson")
+    public void deletePerson(Long id){
+        personImpl.deletePerson(id);
     }
 
     @GetMapping("/findAllAbove18")
