@@ -20,11 +20,12 @@ import java.util.Optional;
 @NoArgsConstructor
 @Service
 // mund ti besh dhe implement PersonService dhe me pas ajo i ben override metodave per te arritur abstrakstionin
-public class PersonImpl {
+public class PersonImpl implements PersonService {
 
     @Autowired
     private PersonRepository personRepository;
 
+    Person testPerson;
 
 
     public List<Person> listAll() {
@@ -33,21 +34,28 @@ public class PersonImpl {
 
 
     public Person getPersonById(Long id) {
+
         return personRepository.findById(id).get();
     }
 
-
+    @Override
     public Person updatePerson(Long id, Person person) {
-        Person person1=personRepository.findById(id).get();
-        person1.setName(person.getName());
-        person1.setAdress(person.getAdress());
-        person1.setEmail(person.getEmail());
-        person1.setAge(person.getAge());
-        personRepository.save(person1);
-        return person1;
-
+        Person existingPerson=getPersonById(id);
+        if(person.getAge()<=0){
+            existingPerson.setAge(existingPerson.getAge());
+        }
+        else {
+            existingPerson.setAge(person.getAge());
+        }
+        if(person.getEmail().equalsIgnoreCase(personRepository.findAllByEmail(personRepository.findAllByEmail(person.getEmail())))){
+            existingPerson.setName(person.getName());
+            existingPerson.setAdress(person.getAdress());
+            return personRepository.save(existingPerson);
+        }
+        else{
+          return personRepository.save(person);
+        }
     }
-
 
     public void deletePerson(Long id) {
         personRepository.deleteById(id);
@@ -55,10 +63,19 @@ public class PersonImpl {
     }
 
 
-    public Person addNewPerson(Person person) {
-        personRepository.save(person);
-        return person;
+    public String addNewPerson(Person person) {
+        if(person.getEmail().equalsIgnoreCase(personRepository.findAllByEmail(person.getEmail()))){
+            return "Email exists";
+        }
+        if(person.getAge()<=0){
+            return "Age not enough";
+        }
+        else {
+            personRepository.save(person);
+            return "Successfully created";
+        }
     }
+
 
    public List<Object> findAllAbove18(){
         return personRepository.findAllAbove18Years();

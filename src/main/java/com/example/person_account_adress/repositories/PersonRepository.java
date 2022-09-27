@@ -17,4 +17,6 @@ public interface PersonRepository extends JpaRepository<Person,Long> {
     @Query("Select p.name, p.email from  Person  p where p.name=:name")
     List<Object> findAllWithGivenName(@Param("name") String name);
 
+    @Query("Select p.email from Person p where p.email=:email")
+    String findAllByEmail(@Param("email") String email);
 }

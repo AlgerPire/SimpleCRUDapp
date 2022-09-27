@@ -3,6 +3,7 @@ package com.example.person_account_adress.controller;
 import com.example.person_account_adress.entities.Person;
 import com.example.person_account_adress.services.impl.PersonImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,7 @@ public class PersonController {
     public String homeView(){
         return "homepage";
     }
-
-
+    
     //listAll Person
     @GetMapping("/listAll")
     public String listAll(Model model){
@@ -52,10 +52,16 @@ public class PersonController {
     }
 
 
-    @PostMapping("/updatePerson")
-    public Person updatePerson(Long id, Person person){
+    @GetMapping("/updatePerson/{id}")
+    public String updatePerson(@PathVariable Long id, Model model){
+        model.addAttribute("person",personImpl.getPersonById(id));
+        return "edit_person";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateStudent(@PathVariable Long id,@ModelAttribute("person") Person person){
         personImpl.updatePerson(id,person);
-        return personImpl.getPersonById(id);
+        return "redirect:/person/listAll";
     }
 
     @DeleteMapping("/deletePerson")

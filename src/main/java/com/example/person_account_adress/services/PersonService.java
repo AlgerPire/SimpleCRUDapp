@@ -20,7 +20,8 @@ public interface PersonService {
     void deletePerson(Long id);
 
     //add new person
-    Person addNewPerson(Person person);
+    String addNewPerson(Person person);
+
 
 
 
